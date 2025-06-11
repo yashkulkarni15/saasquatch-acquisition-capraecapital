@@ -1,4 +1,4 @@
-SaaSQuatch AI - Acquisition Intelligence Platform
+#SaaSQuatch AI - Acquisition Intelligence Platform
 What I Built
 When I first looked at SaaSQuatch Leads, I saw a solid lead generation tool. But then I asked myself: "What's the real problem in M&A?"
 It's not finding companies - it's finding companies that are actually ready to sell. So I spent 5 hours building an AI-powered acquisition readiness scorer that turns basic leads into actionable acquisition opportunities.
