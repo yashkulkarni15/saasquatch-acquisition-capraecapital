@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaSQuatch AI - Acquisition Intelligence Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-badge {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .quick-search {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .quick-search input {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            width: 300px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .quick-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .search-shortcut {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #e5e7eb;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--gray);
+        }
+        
+        .stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        /* AI Insights Bar */
+        .ai-insights-bar {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .ai-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .ai-content {
+            flex: 1;
+        }
+        
+        .ai-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .ai-message {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .ai-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .ai-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ai-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Filters */
+        .filters {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .filter-presets {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .preset-btn {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #e5e7eb;
+            background: var(--white);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .preset-btn:hover {
+            background: var(--light-gray);
+        }
+        
+        .preset-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        select, input {
+            padding: 0.625rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: var(--white);
+            transition: all 0.2s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--light-gray);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        /* Deal Calculator Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: #e5e7eb;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .calculator-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .calculator-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calculator-value {
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .range-input {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .deal-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light-gray);
+            border-radius: 12px;
+        }
+        
+        .metric-card {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+        
+        /* Leads Grid */
+        .view-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--white);
+            padding: 0.25rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--gray);
+        }
+        
+        .view-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .sort-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sort-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        
+        .leads-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
+        
+        .leads-list {
+            display: none;
+        }
+        
+        .leads-list.active {
+            display: block;
+        }
+        
+        .leads-grid.active {
+            display: grid;
+        }
+        
+        /* Enhanced Lead Card */
+        .lead-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .lead-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .lead-card.selected {
+            border: 2px solid var(--primary);
+        }
+        
+        .confidence-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+        
+        .confidence-indicator.low {
+            background: var(--warning);
+        }
+        
+        .lead-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .company-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .company-details {
+            font-size: 0.875rem;
+            color: var(--gray);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .detail-chip {
+            background: var(--light-gray);
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .score-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .score-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            position: relative;
+            background: conic-gradient(
+                var(--primary) 0deg,
+                var(--primary) calc(var(--score) * 3.6deg),
+                #e5e7eb calc(var(--score) * 3.6deg),
+                #e5e7eb 360deg
+            );
+        }
+        
+        .score-inner {
+            width: 60px;
+            height: 60px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .score-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+        
+        .score-hot {
+            color: var(--warning);
+        }
+        
+        .score-warm {
+            color: var(--primary);
+        }
+        
+        .score-cold {
+            color: var(--gray);
+        }
+        
+        .ai-recommendation {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            padding: 0.75rem 1rem;
+            font-size: 0.813rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .ai-icon-small {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 1rem 1.5rem;
+            background: #fafbfc;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 0.5rem;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .metric:last-child {
+            border-right: none;
+        }
+        
+        .metric-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+        
+        .signals-section {
+            padding: 1.5rem;
+        }
+        
+        .signals-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .signals-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .signals-count {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        .signal {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .signal:hover {
+            transform: translateX(4px);
+        }
+        
+        .signal-positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .signal-warning {
+            background: #fed7aa;
+            color: #92400e;
+        }
+        
+        .signal-neutral {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .signal-icon {
+            font-weight: bold;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .signal-text {
+            flex: 1;
+            line-height: 1.4;
+        }
+        
+        .signal-confidence {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-left: auto;
+        }
+        
+        .card-actions {
+            padding: 1rem 1.5rem;
+            background: #fafbfc;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.813rem;
+            text-align: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            color: var(--dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--light-gray);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            color: var(--gray);
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Keyboard Shortcuts Modal */
+        .shortcuts-modal {
+            max-width: 400px;
+        }
+        
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+        
+        .shortcut-key {
+            background: var(--light-gray);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .quick-search input {
+                width: 100%;
+            }
+            
+            .stats {
+                justify-content: space-around;
+                width: 100%;
+            }
+            
+            .ai-insights-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .leads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .metric:nth-child(2) {
+                border-right: none;
+            }
+            
+            .card-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .deal-metrics {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .lead-card {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--white);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-4px);
+        }
+        
+        /* Export Options */
+        .export-menu {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .export-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            min-width: 200px;
+            margin-top: 0.5rem;
+        }
+        
+        .export-dropdown.active {
+            display: block;
+        }
+        
+        .export-option {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .export-option:last-child {
+            border-bottom: none;
+        }
+        
+        .export-option:hover {
+            background: var(--light-gray);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">
+                    <span>🎯</span>
+                    SaaSQuatch AI
+                    <span class="logo-badge">v2.0</span>
+                </div>
+            </div>
+            
+            <div class="quick-search">
+                <input type="text" id="quickSearch" placeholder="Search companies..." />
+                <span class="search-shortcut">Ctrl+K</span>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalLeads">0</span>
+                    <span class="stat-label">Total Targets</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="hotLeads">0</span>
+                    <span class="stat-label">Hot Leads</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="avgScore">0</span>
+                    <span class="stat-label">Avg Score</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="successRate">0%</span>
+                    <span class="stat-label">Success Rate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- AI Insights Bar -->
+        <div class="ai-insights-bar">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-content">
+                <div class="ai-title">AI Market Intelligence Update</div>
+                <div class="ai-message" id="aiMessage">
+                    Analyzing 5 targets... 3 show immediate acquisition readiness signals. 
+                    SaaS multiples trending down 15% - optimal buying window detected.
+                </div>
+            </div>
+            <div class="ai-actions">
+                <button class="ai-button" onclick="showAIReport()">View Full Report</button>
+                <button class="ai-button" onclick="runDeepAnalysis()">Run Deep Analysis</button>
+            </div>
+        </div>
+        
+        <!-- Enhanced Filters -->
+        <div class="filters">
+            <div class="filter-header">
+                <h2 class="filter-title">Smart Filters</h2>
+                <div class="filter-presets">
+                    <button class="preset-btn" onclick="applyPreset('ready-now')">Ready Now</button>
+                    <button class="preset-btn" onclick="applyPreset('high-value')">High Value</button>
+                    <button class="preset-btn" onclick="applyPreset('quick-wins')">Quick Wins</button>
+                    <button class="preset-btn" onclick="applyPreset('growth-plays')">Growth Plays</button>
+                </div>
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">AI Score</label>
+                    <select id="scoreFilter">
+                        <option value="">All Scores</option>
+                        <option value="hot">Hot (80+)</option>
+                        <option value="warm">Warm (50-79)</option>
+                        <option value="cold">Cold (<50)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Industry</label>
+                    <select id="industryFilter">
+                        <option value="">All Industries</option>
+                        <option value="SaaS">SaaS</option>
+                        <option value="E-commerce">E-commerce</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Professional Services">Professional Services</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Revenue Range</label>
+                    <select id="revenueFilter">
+                        <option value="">All Revenues</option>
+                        <option value="1-5">$1M - $5M</option>
+                        <option value="5-10">$5M - $10M</option>
+                        <option value="10-25">$10M - $25M</option>
+                        <option value="25+">$25M+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Market Timing</label>
+                    <select id="timingFilter">
+                        <option value="">All Timing</option>
+                        <option value="buy-now">Buy Now</option>
+                        <option value="prepare">Prepare Offer</option>
+                        <option value="monitor">Monitor</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-actions">
+                <button class="btn btn-primary" onclick="applyFilters()">
+                    <span>🔍</span> Apply Filters
+                </button>
+                <button class="btn btn-secondary" onclick="resetFilters()">Reset</button>
+                <button class="btn btn-primary" onclick="openDealCalculator()">
+                    <span>🧮</span> Deal Calculator
+                </button>
+                <div class="export-menu">
+                    <button class="btn btn-success" onclick="toggleExportMenu()">
+                        <span>📊</span> Export Data
+                    </button>
+                    <div class="export-dropdown" id="exportDropdown">
+                        <div class="export-option" onclick="exportData('csv')">Export as CSV</div>
+                        <div class="export-option" onclick="exportData('excel')">Export as Excel</div>
+                        <div class="export-option" onclick="exportData('pdf')">Export as PDF Report</div>
+                        <div class="export-option" onclick="exportData('api')">Export via API</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- View Controls -->
+        <div class="view-controls">
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="setView('grid')">Grid View</button>
+                <button class="view-btn" onclick="setView('list')">List View</button>
+            </div>
+            <div class="sort-control">
+                <span class="sort-label">Sort by:</span>
+                <select id="sortBy" onchange="sortLeads()">
+                    <option value="score">AI Score</option>
+                    <option value="probability">Success Probability</option>
+                    <option value="value">Deal Value</option>
+                    <option value="timing">Urgency</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Leads Container -->
+        <div class="leads-grid active" id="leadsGrid"></div>
+        <div class="leads-list" id="leadsList"></div>
+        
+        <!-- Loading State -->
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <span>Running AI analysis...</span>
+        </div>
+    </div>
+    
+    <!-- Deal Calculator Modal -->
+    <div class="modal" id="dealCalculatorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">AI Deal Structure Calculator</h3>
+                <button class="modal-close" onclick="closeDealCalculator()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="calculator-section">
+                    <div class="calculator-label">
+                        <span>EBITDA Multiple</span>
+                        <span class="calculator-value" id="multipleValue">5.0x</span>
+                    </div>
+                    <input type="range" class="range-input" id="multipleRange" 
+                           min="3" max="8" step="0.1" value="5" 
+                           oninput="updateCalculator()">
+                </div>
+                
+                <div class="calculator-section">
+                    <div class="calculator-label">
+                        <span>Earnout Percentage</span>
+                        <span class="calculator-value" id="earnoutValue">20%</span>
+                    </div>
+                    <input type="range" class="range-input" id="earnoutRange" 
+                           min="0" max="50" step="5" value="20" 
+                           oninput="updateCalculator()">
+                </div>
+                
+                <div class="calculator-section">
+                    <div class="calculator-label">
+                        <span>Equity Rollover</span>
+                        <span class="calculator-value" id="rolloverValue">15%</span>
+                    </div>
+                    <input type="range" class="range-input" id="rolloverRange" 
+                           min="0" max="40" step="5" value="15" 
+                           oninput="updateCalculator()">
+                </div>
+                
+                <div class="deal-metrics">
+                    <div class="metric-card">
+                        <span class="metric-value" id="irrValue">28%</span>
+                        <span class="metric-label">5-Year IRR</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="cocValue">3.2x</span>
+                        <span class="metric-label">Cash-on-Cash</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value" id="breakevenValue">18mo</span>
+                        <span class="metric-label">Break-even</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn btn-primary" style="width: 100%;" 
+                            onclick="applyDealStructure()">
+                        Apply to Selected Targets
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal" id="shortcutsModal">
+        <div class="modal-content shortcuts-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Keyboard Shortcuts</h3>
+                <button class="modal-close" onclick="closeShortcuts()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcut-item">
+                    <span>Quick Search</span>
+                    <span class="shortcut-key">Ctrl + K</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Deal Calculator</span>
+                    <span class="shortcut-key">Ctrl + D</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Export Data</span>
+                    <span class="shortcut-key">Ctrl + E</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Toggle View</span>
+                    <span class="shortcut-key">Ctrl + V</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Show Shortcuts</span>
+                    <span class="shortcut-key">?</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Enhanced data with AI fields
+        const acquisitionTargets = [
+            {
+                id: 1,
+                company: "CloudScale Analytics",
+                industry: "SaaS",
+                location: "Austin, TX",
+                employees: 125,
+                revenue: 22000000,
+                ebitda: 5500000,
+                yearFounded: 2014,
+                ownerAge: 58,
+                askingPrice: 88000000,
+                score: 94,
+                successProbability: 0.88,
+                marketTiming: "BUY_NOW",
+                aiConfidence: 0.92,
+                suggestedMultiple: 14.5,
+                optimalWindow: "0-2 months",
+                signals: [
+                    { type: 'positive', text: 'Owner approaching retirement (58) - high urgency', confidence: 0.9 },
+                    { type: 'positive', text: '25% EBITDA margin - 25% above industry average', confidence: 0.85 },
+                    { type: 'positive', text: 'Accelerating growth at 35% YoY - strong momentum', confidence: 0.88 },
+                    { type: 'positive', text: '92% recurring revenue - highly predictable', confidence: 0.95 }
+                ],
+                hiddenOpportunities: [
+                    'Technology modernization could unlock 20-30% efficiency gains',
+                    'Geographic expansion opportunity - currently regional player',
+                    'Cross-sell opportunities with existing portfolio companies'
+                ]
+            },
+            {
+                id: 2,
+                company: "MedConnect Solutions",
+                industry: "Healthcare",
+                location: "Boston, MA",
+                employees: 200,
+                revenue: 45000000,
+                ebitda: 9000000,
+                yearFounded: 2010,
+                ownerAge: 62,
+                askingPrice: 54000000,
+                score: 86,
+                successProbability: 0.79,
+                marketTiming: "BUY_NOW",
+                aiConfidence: 0.84,
+                suggestedMultiple: 5.5,
+                optimalWindow: "0-3 months",
+                signals: [
+                    { type: 'positive', text: 'Owner ready for immediate sale (age 62)', confidence: 0.95 },
+                    { type: 'positive', text: '78% recurring revenue - good stability', confidence: 0.82 },
+                    { type: 'positive', text: '8 patents provide competitive moat', confidence: 0.78 },
+                    { type: 'warning', text: 'Technology stack may require investment', confidence: 0.7 }
+                ],
+                hiddenOpportunities: [
+                    'Telemedicine expansion could double addressable market',
+                    'AI integration for diagnostics improvement',
+                    'Medicare Advantage partnership opportunities'
+                ]
+            },
+            {
+                id: 3,
+                company: "EcoShip Logistics",
+                industry: "E-commerce",
+                location: "Miami, FL",
+                employees: 85,
+                revenue: 15000000,
+                ebitda: 2250000,
+                yearFounded: 2016,
+                ownerAge: 42,
+                askingPrice: 18000000,
+                score: 68,
+                successProbability: 0.52,
+                marketTiming: "MONITOR",
+                aiConfidence: 0.71,
+                suggestedMultiple: 6.5,
+                optimalWindow: "6+ months",
+                signals: [
+                    { type: 'positive', text: 'Accelerating growth at 45% YoY', confidence: 0.8 },
+                    { type: 'warning', text: 'High customer concentration (55%)', confidence: 0.9 },
+                    { type: 'warning', text: 'Young owner (42) - likely focused on growth', confidence: 0.75 },
+                    { type: 'neutral', text: 'Modern tech stack - easier integration', confidence: 0.65 }
+                ],
+                hiddenOpportunities: [
+                    'Last-mile delivery optimization using AI',
+                    'Sustainability certifications could attract premium clients',
+                    'Integration with major e-commerce platforms'
+                ]
+            },
+            {
+                id: 4,
+                company: "Precision Manufacturing Co",
+                industry: "Manufacturing",
+                location: "Cleveland, OH",
+                employees: 250,
+                revenue: 48000000,
+                ebitda: 8640000,
+                yearFounded: 1995,
+                ownerAge: 67,
+                askingPrice: 52000000,
+                score: 91,
+                successProbability: 0.85,
+                marketTiming: "BUY_NOW",
+                aiConfidence: 0.89,
+                suggestedMultiple: 5.8,
+                optimalWindow: "0-2 months",
+                signals: [
+                    { type: 'positive', text: 'Owner ready for immediate exit (age 67)', confidence: 0.98 },
+                    { type: 'positive', text: 'Deep management bench - smooth transition', confidence: 0.88 },
+                    { type: 'positive', text: 'Long-term contracts with Fortune 500', confidence: 0.85 },
+                    { type: 'positive', text: '12 patents provide competitive advantage', confidence: 0.82 }
+                ],
+                hiddenOpportunities: [
+                    'Industry 4.0 automation could reduce costs by 25%',
+                    'Reshoring trend creates expansion opportunities',
+                    'ESG improvements could unlock new customer segments'
+                ]
+            },
+            {
+                id: 5,
+                company: "Strategic Advisors Group",
+                industry: "Professional Services",
+                location: "Chicago, IL",
+                employees: 175,
+                revenue: 35000000,
+                ebitda: 7700000,
+                yearFounded: 2008,
+                ownerAge: 54,
+                askingPrice: 46200000,
+                score: 76,
+                successProbability: 0.64,
+                marketTiming: "PREPARE_OFFER",
+                aiConfidence: 0.78,
+                suggestedMultiple: 5.2,
+                optimalWindow: "2-4 months",
+                signals: [
+                    { type: 'positive', text: 'Strong management team in place', confidence: 0.85 },
+                    { type: 'positive', text: '22% EBITDA margin - above average', confidence: 0.8 },
+                    { type: 'neutral', text: 'Owner age 54 - potential exit in 3-5 years', confidence: 0.7 },
+                    { type: 'warning', text: 'Key employee dependency risk', confidence: 0.75 }
+                ],
+                hiddenOpportunities: [
+                    'Digital transformation consulting practice expansion',
+                    'AI-powered analytics offerings',
+                    'Acquisition roll-up strategy in fragmented market'
+                ]
+            }
+        ];
+        
+        // Initialize application
+        let currentView = 'grid';
+        let filteredTargets = [...acquisitionTargets];
+        let selectedTargets = new Set();
+        
+        // Render functions
+        function renderTargets(targets = filteredTargets) {
+            const grid = document.getElementById('leadsGrid');
+            grid.innerHTML = '';
+            
+            targets.forEach((target, index) => {
+                const scoreClass = getScoreClass(target.score);
+                const ebitdaMargin = ((target.ebitda / target.revenue) * 100).toFixed(1);
+                const currentMultiple = (target.askingPrice / target.ebitda).toFixed(1);
+                const aiRecommendation = getAIRecommendation(target);
+                
+                const card = document.createElement('div');
+                card.className = 'lead-card';
+                card.style.setProperty('--score', target.score);
+                card.style.animationDelay = `${index * 0.05}s`;
+                
+                // Add confidence indicator
+                const confidenceClass = target.aiConfidence > 0.8 ? '' : 'low';
+                
+                card.innerHTML = `
+                    <div class="confidence-indicator ${confidenceClass}" 
+                         title="AI Confidence: ${(target.aiConfidence * 100).toFixed(0)}%"></div>
+                    
+                    <div class="lead-header">
+                        <div class="company-info">
+                            <h3>${target.company}</h3>
+                            <div class="company-details">
+                                <span class="detail-chip">${target.industry}</span>
+                                <span class="detail-chip">${target.location}</span>
+                                <span class="detail-chip">${target.employees} employees</span>
+                            </div>
+                        </div>
+                        <div class="score-section">
+                            <div class="score-circle">
+                                <div class="score-inner">${target.score}</div>
+                            </div>
+                            <div class="score-label score-${scoreClass}">${scoreClass.toUpperCase()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-recommendation">
+                        <div class="ai-icon-small">AI</div>
+                        <span>${aiRecommendation}</span>
+                    </div>
+                    
+                    <div class="metrics-row">
+                        <div class="metric">
+                            <div class="metric-value">${formatCurrency(target.revenue / 1000000)}M</div>
+                            <div class="metric-label">Revenue</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${ebitdaMargin}%</div>
+                            <div class="metric-label">EBITDA</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${currentMultiple}x</div>
+                            <div class="metric-label">Ask Multiple</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">${(target.successProbability * 100).toFixed(0)}%</div>
+                            <div class="metric-label">Success Prob</div>
+                        </div>
+                    </div>
+                    
+                    <div class="signals-section">
+                        <div class="signals-header">
+                            <div class="signals-title">AI Acquisition Signals</div>
+                            <div class="signals-count">${target.signals.length} signals</div>
+                        </div>
+                        ${target.signals.map(signal => `
+                            <div class="signal signal-${signal.type}">
+                                <span class="signal-icon">${
+                                    signal.type === 'positive' ? '✓' : 
+                                    signal.type === 'warning' ? '!' : '•'
+                                }</span>
+                                <span class="signal-text">${signal.text}</span>
+                                <span class="signal-confidence" 
+                                      title="Confidence: ${(signal.confidence * 100).toFixed(0)}%">
+                                    ${(signal.confidence * 100).toFixed(0)}%
+                                </span>
+                            </div>
+                        `).join('')}
+                        
+                        ${target.hiddenOpportunities.length > 0 ? `
+                            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                                <div class="signals-title" style="margin-bottom: 0.5rem;">
+                                    🎯 Hidden Opportunities
+                                </div>
+                                <div style="font-size: 0.813rem; color: #6b7280; line-height: 1.5;">
+                                    ${target.hiddenOpportunities[0]}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="btn btn-small btn-primary" onclick="initiateOutreach(${target.id})">
+                            📧 Smart Outreach
+                        </button>
+                        <button class="btn btn-small btn-outline" onclick="viewFullAnalysis(${target.id})">
+                            📊 Full Analysis
+                        </button>
+                        <button class="btn btn-small btn-outline" onclick="toggleSelection(${target.id})">
+                            ${selectedTargets.has(target.id) ? '✓ Selected' : 'Select'}
+                        </button>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            updateStats(targets);
+        }
+        
+        function getScoreClass(score) {
+            if (score >= 80) return 'hot';
+            if (score >= 50) return 'warm';
+            return 'cold';
+        }
+        
+        function getAIRecommendation(target) {
+            if (target.marketTiming === 'BUY_NOW') {
+                return `🔥 Immediate action required - ${target.optimalWindow} window`;
+            } else if (target.marketTiming === 'PREPARE_OFFER') {
+                return `📋 Prepare offer - optimal timing in ${target.optimalWindow}`;
+            } else {
+                return `👀 Monitor for triggers - check again in ${target.optimalWindow}`;
+            }
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function updateStats(targets) {
+            document.getElementById('totalLeads').textContent = targets.length;
+            document.getElementById('hotLeads').textContent = targets.filter(t => t.score >= 80).length;
+            document.getElementById('avgScore').textContent = Math.round(
+                targets.reduce((sum, t) => sum + t.score, 0) / targets.length
+            );
+            document.getElementById('successRate').textContent = Math.round(
+                targets.reduce((sum, t) => sum + t.successProbability, 0) / targets.length * 100
+            ) + '%';
+            
+            // Update AI message
+            const hotCount = targets.filter(t => t.marketTiming === 'BUY_NOW').length;
+            const avgMultiple = targets.reduce((sum, t) => sum + (t.askingPrice / t.ebitda), 0) / targets.length;
+            
+            document.getElementById('aiMessage').textContent = 
+                `Analyzing ${targets.length} targets... ${hotCount} show immediate acquisition readiness. ` +
+                `Average asking multiple: ${avgMultiple.toFixed(1)}x. ${hotCount > 0 ? 'Action recommended.' : 'Continue monitoring.'}`;
+        }
+        
+        // Filter functions
+        function applyFilters() {
+            const scoreFilter = document.getElementById('scoreFilter').value;
+            const industryFilter = document.getElementById('industryFilter').value;
+            const revenueFilter = document.getElementById('revenueFilter').value;
+            const timingFilter = document.getElementById('timingFilter').value;
+            
+            filteredTargets = acquisitionTargets.filter(target => {
+                // Score filter
+                if (scoreFilter) {
+                    const scoreClass = getScoreClass(target.score);
+                    if (scoreClass !== scoreFilter) return false;
+                }
+                
+                // Industry filter
+                if (industryFilter && target.industry !== industryFilter) return false;
+                
+                // Revenue filter
+                if (revenueFilter) {
+                    const revM = target.revenue / 1000000;
+                    switch(revenueFilter) {
+                        case '1-5': if (revM < 1 || revM >= 5) return false; break;
+                        case '5-10': if (revM < 5 || revM >= 10) return false; break;
+                        case '10-25': if (revM < 10 || revM >= 25) return false; break;
+                        case '25+': if (revM < 25) return false; break;
+                    }
+                }
+                
+                // Timing filter
+                if (timingFilter) {
+                    const timingMap = {
+                        'buy-now': 'BUY_NOW',
+                        'prepare': 'PREPARE_OFFER',
+                        'monitor': 'MONITOR'
+                    };
+                    if (target.marketTiming !== timingMap[timingFilter]) return false;
+                }
+                
+                return true;
+            });
+            
+            renderTargets(filteredTargets);
+        }
+        
+        function resetFilters() {
+            document.getElementById('scoreFilter').value = '';
+            document.getElementById('industryFilter').value = '';
+            document.getElementById('revenueFilter').value = '';
+            document.getElementById('timingFilter').value = '';
+            filteredTargets = [...acquisitionTargets];
+            renderTargets();
+        }
+        
+        function applyPreset(preset) {
+            resetFilters();
+            
+            switch(preset) {
+                case 'ready-now':
+                    document.getElementById('timingFilter').value = 'buy-now';
+                    break;
+                case 'high-value':
+                    document.getElementById('revenueFilter').value = '25+';
+                    break;
+                case 'quick-wins':
+                    document.getElementById('scoreFilter').value = 'hot';
+                    document.getElementById('revenueFilter').value = '5-10';
+                    break;
+                case 'growth-plays':
+                    // Filter for high growth companies
+                    filteredTargets = acquisitionTargets.filter(t => 
+                        t.revenue > 10000000 && t.score >= 70
+                    );
+                    renderTargets();
+                    return;
+            }
+            
+            applyFilters();
+            
+            // Update active preset button
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('quickSearch');
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                if (query) {
+                    filteredTargets = acquisitionTargets.filter(target => 
+                        target.company.toLowerCase().includes(query) ||
+                        target.industry.toLowerCase().includes(query) ||
+                        target.location.toLowerCase().includes(query)
+                    );
+                } else {
+                    filteredTargets = [...acquisitionTargets];
+                }
+                
+                renderTargets();
+            });
+        }
+        
+        // Deal Calculator
+        function openDealCalculator() {
+            document.getElementById('dealCalculatorModal').classList.add('active');
+            updateCalculator();
+        }
+        
+        function closeDealCalculator() {
+            document.getElementById('dealCalculatorModal').classList.remove('active');
+        }
+        
+        function updateCalculator() {
+            const multiple = document.getElementById('multipleRange').value;
+            const earnout = document.getElementById('earnoutRange').value;
+            const rollover = document.getElementById('rolloverRange').value;
+            
+            document.getElementById('multipleValue').textContent = `${multiple}x`;
+            document.getElementById('earnoutValue').textContent = `${earnout}%`;
+            document.getElementById('rolloverValue').textContent = `${rollover}%`;
+            
+            // Calculate metrics (simplified)
+            const baseIRR = 25;
+            const irrAdjustment = (6 - multiple) * 3 + (earnout / 10) + (rollover / 10);
+            const irr = Math.max(10, Math.min(50, baseIRR + irrAdjustment));
+            
+            const coc = Math.max(1.5, Math.min(5, 7 - multiple + (earnout / 20)));
+            const breakeven = Math.max(6, Math.min(36, multiple * 3 - earnout / 5));
+            
+            document.getElementById('irrValue').textContent = `${irr.toFixed(0)}%`;
+            document.getElementById('cocValue').textContent = `${coc.toFixed(1)}x`;
+            document.getElementById('breakevenValue').textContent = `${breakeven.toFixed(0)}mo`;
+        }
+        
+        function applyDealStructure() {
+            alert('Deal structure applied to selected targets. AI is optimizing terms...');
+            closeDealCalculator();
+        }
+        
+        // Export functionality
+        function toggleExportMenu() {
+            const dropdown = document.getElementById('exportDropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        function exportData(format) {
+            const dropdown = document.getElementById('exportDropdown');
+            dropdown.classList.remove('active');
+            
+            switch(format) {
+                case 'csv':
+                    exportCSV();
+                    break;
+                case 'excel':
+                    alert('Generating Excel report with AI insights...');
+                    break;
+                case 'pdf':
+                    alert('Creating comprehensive PDF report with visualizations...');
+                    break;
+                case 'api':
+                    alert('API endpoint: https://api.saasquatch.ai/export\nAPI Key: your-api-key');
+                    break;
+            }
+        }
+        
+        function exportCSV() {
+            let csv = 'Company,Industry,Revenue,EBITDA,Score,Success Probability,Market Timing,AI Recommendation\n';
+            filteredTargets.forEach(t => {
+                csv += `"${t.company}","${t.industry}",${t.revenue},${t.ebitda},${t.score},${t.successProbability},${t.marketTiming},"${getAIRecommendation(t)}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'acquisition_targets_ai_analysis.csv';
+            a.click();
+        }
+        
+        // Action functions
+        function initiateOutreach(id) {
+            const target = acquisitionTargets.find(t => t.id === id);
+            alert(`AI-Powered Outreach Sequence Generated for ${target.company}:\n\n` +
+                  `📧 Day 0: Personalized introduction highlighting ${target.signals[0].text}\n` +
+                  `📧 Day 7: Follow-up with industry insights\n` +
+                  `📧 Day 14: Value proposition based on ${target.hiddenOpportunities[0]}\n` +
+                  `📧 Day 30: Final touch with urgency (${target.optimalWindow} window)\n\n` +
+                  `Success Probability: ${(target.successProbability * 100).toFixed(0)}%`);
+        }
+        
+        function viewFullAnalysis(id) {
+            const target = acquisitionTargets.find(t => t.id === id);
+            alert(`Full AI Analysis for ${target.company}:\n\n` +
+                  `🎯 Acquisition Score: ${target.score}/100\n` +
+                  `📊 Success Probability: ${(target.successProbability * 100).toFixed(0)}%\n` +
+                  `⏰ Market Timing: ${target.marketTiming}\n` +
+                  `💰 Current Ask: ${formatCurrency(target.askingPrice)} (${(target.askingPrice/target.ebitda).toFixed(1)}x)\n` +
+                  `🤖 AI Suggested: ${formatCurrency(target.ebitda * target.suggestedMultiple)} (${target.suggestedMultiple}x)\n\n` +
+                  `Hidden Opportunities:\n` +
+                  target.hiddenOpportunities.map((opp, i) => `${i + 1}. ${opp}`).join('\n') +
+                  `\n\nNext Steps:\n` +
+                  `1. Initiate outreach focusing on owner readiness\n` +
+                  `2. Prepare preliminary valuation model\n` +
+                  `3. Research comparable transactions\n` +
+                  `4. Schedule internal investment committee`);
+        }
+        
+        function toggleSelection(id) {
+            if (selectedTargets.has(id)) {
+                selectedTargets.delete(id);
+            } else {
+                selectedTargets.add(id);
+            }
+            renderTargets();
+        }
+        
+        function sortLeads() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            filteredTargets.sort((a, b) => {
+                switch(sortBy) {
+                    case 'score':
+                        return b.score - a.score;
+                    case 'probability':
+                        return b.successProbability - a.successProbability;
+                    case 'value':
+                        return b.askingPrice - a.askingPrice;
+                    case 'timing':
+                        const timingOrder = { 'BUY_NOW': 3, 'PREPARE_OFFER': 2, 'MONITOR': 1 };
+                        return timingOrder[b.marketTiming] - timingOrder[a.marketTiming];
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderTargets();
+        }
+        
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(view));
+            });
+            
+            if (view === 'list') {
+                alert('List view coming soon! This will show a detailed table with sortable columns.');
+            }
+        }
+        
+        function showAIReport() {
+            alert('Full AI Market Intelligence Report:\n\n' +
+                  '📈 Market Conditions: Favorable (Score: 8.2/10)\n' +
+                  '🏭 Industry Consolidation: High in SaaS (80%), Moderate in Healthcare (60%)\n' +
+                  '💰 Valuation Trends: Declining 15% YoY - buyer\'s market\n' +
+                  '🎯 Top Opportunities: 3 targets with immediate readiness\n' +
+                  '⚠️ Key Risks: Rising interest rates, tech talent shortage\n\n' +
+                  'Recommendations:\n' +
+                  '1. Act quickly on CloudScale Analytics (94 score)\n' +
+                  '2. Prepare offers for 2 additional targets\n' +
+                  '3. Monitor 2 targets for Q2 2024 approach');
+        }
+        
+        function runDeepAnalysis() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'flex';
+            
+            setTimeout(() => {
+                loading.style.display = 'none';
+                alert('Deep AI Analysis Complete!\n\n' +
+                      '🔍 Analyzed 127 additional data points per company\n' +
+                      '📊 Updated success probabilities based on market conditions\n' +
+                      '🎯 Identified 7 new hidden opportunities\n' +
+                      '📈 Refined valuations using 15 comparable transactions\n\n' +
+                      'Key Findings:\n' +
+                      '• CloudScale Analytics urgency increased - owner hired banker\n' +
+                      '• Precision Manufacturing showing distress signals\n' +
+                      '• New opportunity identified in adjacent market');
+                renderTargets();
+            }, 3000);
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'k':
+                        e.preventDefault();
+                        document.getElementById('quickSearch').focus();
+                        break;
+                    case 'd':
+                        e.preventDefault();
+                        openDealCalculator();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        toggleExportMenu();
+                        break;
+                    case 'v':
+                        e.preventDefault();
+                        setView(currentView === 'grid' ? 'list' : 'grid');
+                        break;
+                }
+            } else if (e.key === '?') {
+                e.preventDefault();
+                showShortcuts();
+            }
+        });
+        
+        function showShortcuts() {
+            document.getElementById('shortcutsModal').classList.add('active');
+        }
+        
+        function closeShortcuts() {
+            document.getElementById('shortcutsModal').classList.remove('active');
+        }
+        
+        // Close modals on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTargets();
+            initializeSearch();
+            
+            // Show welcome message
+            setTimeout(() => {
+                console.log('🎯 SaaSQuatch AI v2.0 - Acquisition Intelligence Platform');
+                console.log('Press ? to see keyboard shortcuts');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
