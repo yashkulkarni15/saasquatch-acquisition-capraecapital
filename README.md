@@ -10,6 +10,8 @@ python acquisition-scorer-python.py
 Web Interface (Frontend)
 Simply open saasquatch-acquisition-scorer.html in any modern browser.
 
+DEMO VIDEO : https://drive.google.com/drive/folders/1GmvmBEd6r3zFFgR0CbM7G25KF8xiWeEK?usp=share_link
+
 
 💡 Key Features Built
 1. AI Scoring Engine (Python)
